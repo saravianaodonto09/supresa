@@ -83,8 +83,8 @@ canvas {
   top: 22px;
   border-radius: 18px;
   touch-action: none;
+  z-index: 5;
 }
-
 .instruction {
   margin-top: 18px;
   color: #ffdede;
@@ -251,9 +251,12 @@ let isDrawing = false;
 
 function setupCanvas() {
   const prize = card.querySelector(".prize");
-  canvas.width = prize.offsetWidth;
-  canvas.height = prize.offsetHeight;
+  const rect = prize.getBoundingClientRect();
 
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+
+  ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = "#9b9b9b";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -266,25 +269,39 @@ function setupCanvas() {
   ctx.fillText("💰 prêmio garantido 💰", canvas.width / 2, canvas.height / 2 + 28);
 }
 
-setupCanvas();
+window.addEventListener("load", setupCanvas);
+window.addEventListener("resize", setupCanvas);
 
 function getPosition(e) {
   const rect = canvas.getBoundingClientRect();
-  const touch = e.touches ? e.touches[0] : e;
+
   return {
-    x: touch.clientX - rect.left,
-    y: touch.clientY - rect.top
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
   };
+}
+
+function startScratch(e) {
+  e.preventDefault();
+  isDrawing = true;
+  scratch(e);
+}
+
+function stopScratch(e) {
+  e.preventDefault();
+  isDrawing = false;
 }
 
 function scratch(e) {
   if (!isDrawing || revealed) return;
+
   e.preventDefault();
 
   const pos = getPosition(e);
+
   ctx.globalCompositeOperation = "destination-out";
   ctx.beginPath();
-  ctx.arc(pos.x, pos.y, 28, 0, Math.PI * 2);
+  ctx.arc(pos.x, pos.y, 32, 0, Math.PI * 2);
   ctx.fill();
 
   checkReveal();
@@ -300,7 +317,7 @@ function checkReveal() {
 
   const percent = clear / (pixels.data.length / 4);
 
-  if (percent > 0.42 && !revealed) {
+  if (percent > 0.35 && !revealed) {
     revealPrize();
   }
 }
@@ -323,13 +340,11 @@ function revealPrize() {
   }, 1500);
 }
 
-canvas.addEventListener("mousedown", () => isDrawing = true);
-canvas.addEventListener("mouseup", () => isDrawing = false);
-canvas.addEventListener("mousemove", scratch);
-
-canvas.addEventListener("touchstart", () => isDrawing = true);
-canvas.addEventListener("touchend", () => isDrawing = false);
-canvas.addEventListener("touchmove", scratch);
+canvas.addEventListener("pointerdown", startScratch, { passive: false });
+canvas.addEventListener("pointermove", scratch, { passive: false });
+canvas.addEventListener("pointerup", stopScratch, { passive: false });
+canvas.addEventListener("pointercancel", stopScratch, { passive: false });
+canvas.addEventListener("pointerleave", stopScratch, { passive: false });
 </script>
 
 </body>
