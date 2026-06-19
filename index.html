@@ -3,348 +3,501 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Raspadinha Premiada</title>
 
 <style>
-* {
-  box-sizing: border-box;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(circle, #3b0000, #090909 70%);
-  font-family: Arial, sans-serif;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+body{
+background:#000;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+overflow:hidden;
 }
 
-.container {
-  width: 92%;
-  max-width: 420px;
-  text-align: center;
+.container{
+width:100%;
+max-width:420px;
+text-align:center;
 }
 
-h1 {
-  color: #ff1e1e;
-  font-size: 34px;
-  text-shadow: 0 0 15px red;
-  margin-bottom: 10px;
+h1{
+color:#ff0000;
+font-size:52px;
+font-weight:900;
+text-shadow:0 0 25px red;
+margin-bottom:15px;
 }
 
-.sub {
-  color: #ffcccc;
-  margin-bottom: 20px;
-  font-weight: bold;
+.subtitle{
+color:#ffd7d7;
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
 }
 
-.card {
-  background: linear-gradient(145deg, #1b1b1b, #050505);
-  border: 3px solid #ff0000;
-  border-radius: 22px;
-  padding: 22px;
-  box-shadow: 0 0 35px rgba(255, 0, 0, 0.7);
-  position: relative;
+.card{
+position:relative;
+background:#111;
+border:4px solid #ff0000;
+border-radius:28px;
+padding:22px;
+box-shadow:0 0 35px red;
 }
 
-.prize {
-  height: 230px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #8b0000, #ff0000);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-weight: 900;
-  padding: 20px;
-  text-shadow: 2px 2px #000;
+.prize{
+height:240px;
+border-radius:20px;
+background:
+linear-gradient(
+135deg,
+#730000,
+#ff0000
+);
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+padding:15px;
+overflow:hidden;
+
+color:white;
+text-shadow:2px 2px 4px black;
 }
 
-.prize .small {
-  font-size: 23px;
+.prize h2{
+font-size:22px;
+margin-bottom:10px;
 }
 
-.prize .big {
-  font-size: 30px;
-  margin: 12px 0;
+.prize p{
+font-size:30px;
+font-weight:900;
+line-height:1.2;
+max-width:90%;
 }
 
-.prize .punch {
-  font-size: 42px;
+canvas{
+position:absolute;
+left:22px;
+top:22px;
+border-radius:20px;
+touch-action:none;
+z-index:5;
 }
 
-canvas {
-  position: absolute;
-  left: 22px;
-  top: 22px;
-  border-radius: 18px;
-  touch-action: none;
-  z-index: 5;
-}
-.instruction {
-  margin-top: 18px;
-  color: #ffdede;
-  font-size: 15px;
+.instruction{
+margin-top:18px;
+font-size:17px;
+color:#ffe3e3;
 }
 
-.screen-shake {
-  animation: shake 0.45s linear 3;
+/* IMPACTO */
+
+.flash{
+position:fixed;
+inset:0;
+background:red;
+opacity:0;
+pointer-events:none;
+z-index:90;
 }
 
-@keyframes shake {
-  0% { transform: translate(0); }
-  20% { transform: translate(-8px, 5px); }
-  40% { transform: translate(8px, -5px); }
-  60% { transform: translate(-6px, -4px); }
-  80% { transform: translate(6px, 4px); }
-  100% { transform: translate(0); }
+.flash.active{
+animation:flash .35s;
 }
 
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+@keyframes flash{
+0%{opacity:0;}
+50%{opacity:.7;}
+100%{opacity:0;}
 }
 
-.overlay.active {
-  display: flex;
+.shake{
+animation:shake .4s linear 4;
 }
 
-.glove {
-  width: 180px;
-  height: 150px;
-  background: #d60000;
-  border-radius: 55% 45% 50% 50%;
-  position: relative;
-  box-shadow: inset -18px -15px 0 #8b0000, 0 0 40px red;
-  animation: punch 1.1s ease-out forwards;
+@keyframes shake{
+
+0%{transform:translate(0);}
+20%{transform:translate(-8px,5px);}
+40%{transform:translate(8px,-5px);}
+60%{transform:translate(-6px,-4px);}
+80%{transform:translate(6px,4px);}
+100%{transform:translate(0);}
+
 }
 
-.glove::before {
-  content: "";
-  position: absolute;
-  width: 95px;
-  height: 85px;
-  background: #ff1a1a;
-  border-radius: 50%;
-  left: -35px;
-  top: 18px;
-  box-shadow: inset -10px -10px 0 #9b0000;
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:100;
 }
 
-.glove::after {
-  content: "";
-  position: absolute;
-  width: 75px;
-  height: 55px;
-  background: #111;
-  border-radius: 15px;
-  right: 10px;
-  bottom: -35px;
-  border: 5px solid #700000;
+.overlay.active{
+display:flex;
 }
 
-@keyframes punch {
-  0% {
-    transform: scale(0.1) translateY(300px) rotate(-25deg);
-    opacity: 0;
-  }
-  55% {
-    transform: scale(1.8) translateY(-40px) rotate(8deg);
-    opacity: 1;
-  }
-  75% {
-    transform: scale(1.35) translateY(10px) rotate(-5deg);
-  }
-  100% {
-    transform: scale(1.55) translateY(0) rotate(0deg);
-  }
+.punch{
+font-size:260px;
+animation:punch .9s cubic-bezier(.2,1.4,.4,1) forwards;
+filter:drop-shadow(0 0 35px red);
 }
 
-.boom {
-  position: fixed;
-  top: 18%;
-  font-size: 48px;
-  color: #ff0000;
-  font-weight: 900;
-  text-shadow: 0 0 20px red, 3px 3px #000;
-  display: none;
-  z-index: 11;
-  animation: boom 0.7s ease-out forwards;
+@keyframes punch{
+
+0%{
+transform:
+scale(.1)
+translateY(400px)
+rotate(-30deg);
+opacity:0;
 }
 
-.boom.active {
-  display: block;
+50%{
+transform:
+scale(2.6)
+translateY(-20px)
+rotate(10deg);
+opacity:1;
 }
 
-@keyframes boom {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1.2);
-    opacity: 1;
-  }
+100%{
+transform:
+scale(1.8)
+translateY(0)
+rotate(0);
 }
 
-button {
-  margin-top: 18px;
-  background: #ff0000;
-  color: white;
-  border: none;
-  border-radius: 14px;
-  padding: 14px 22px;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0 0 20px red;
-  display: none;
 }
 
-button.show {
-  display: inline-block;
+.boom{
+position:fixed;
+top:18%;
+left:50%;
+transform:translateX(-50%);
+font-size:90px;
+font-weight:900;
+color:#ff0000;
+display:none;
+z-index:150;
+text-shadow:
+0 0 30px red,
+0 0 60px red;
 }
+
+.boom.active{
+display:block;
+animation:boom .7s ease-out;
+}
+
+@keyframes boom{
+from{
+transform:
+translateX(-50%)
+scale(.1);
+opacity:0;
+}
+to{
+transform:
+translateX(-50%)
+scale(1);
+opacity:1;
+}
+}
+
+button{
+display:none;
+margin-top:25px;
+
+background:#a00000;
+color:white;
+border:none;
+
+padding:16px 24px;
+font-size:18px;
+font-weight:bold;
+
+border-radius:16px;
+box-shadow:0 0 20px red;
+}
+
+button.show{
+display:inline-block;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="boom" id="boom">TOMA!!!</div>
+<div class="flash" id="flash"></div>
+
+<div class="boom" id="boom">
+TOMA!!!
+</div>
 
 <div class="overlay" id="overlay">
-  <div class="glove"></div>
+<div class="punch">🥊</div>
 </div>
 
 <div class="container" id="page">
-  <h1>RASPADINHA PREMIADA</h1>
-  <div class="sub">Raspe e descubra seu prêmio misterioso</div>
 
-  <div class="card" id="card">
-    <div class="prize">
-      <div class="small">🎉 PARABÉNS 🎉</div>
-      <div class="big">VOCÊ ACABOU DE GANHAR</div>
-      <div class="punch">🥊 UM SOCO NA CARA VIRTUAL 🥊</div>
-    </div>
-    <canvas id="scratch"></canvas>
-  </div>
+<h1>RASPADINHA</h1>
 
-  <div class="instruction">Passe o dedo na área cinza para raspar</div>
+<div class="subtitle">
+Raspe e descubra seu prêmio misterioso
+</div>
 
-  <button id="again" onclick="location.reload()">Jogar de novo</button>
+<div class="card" id="card">
+
+<div class="prize">
+
+<h2>🎉 PARABÉNS 🎉</h2>
+
+<p>
+VOCÊ GANHOU UM SOCO
+NA CARA VIRTUAL 🥊
+</p>
+
+</div>
+
+<canvas id="scratch"></canvas>
+
+</div>
+
+<div class="instruction">
+Passe o dedo na área cinza para raspar
+</div>
+
+<button id="again"
+onclick="location.reload()">
+PROCESSAR INDENIZAÇÃO
+</button>
+
 </div>
 
 <script>
-const canvas = document.getElementById("scratch");
-const card = document.getElementById("card");
-const ctx = canvas.getContext("2d");
 
-let revealed = false;
-let isDrawing = false;
+const canvas=document.getElementById("scratch");
+const ctx=canvas.getContext("2d");
 
-function setupCanvas() {
-  const prize = card.querySelector(".prize");
-  const rect = prize.getBoundingClientRect();
+let drawing=false;
+let revealed=false;
 
-  canvas.width = rect.width;
-  canvas.height = rect.height;
+function setupCanvas(){
 
-  ctx.globalCompositeOperation = "source-over";
-  ctx.fillStyle = "#9b9b9b";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+const prize=
+document.querySelector(".prize");
 
-  ctx.fillStyle = "#333";
-  ctx.font = "bold 24px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText("RASPE AQUI", canvas.width / 2, canvas.height / 2 - 5);
+const rect=
+prize.getBoundingClientRect();
 
-  ctx.font = "16px Arial";
-  ctx.fillText("💰 prêmio garantido 💰", canvas.width / 2, canvas.height / 2 + 28);
+canvas.width=rect.width;
+canvas.height=rect.height;
+
+ctx.globalCompositeOperation=
+"source-over";
+
+ctx.fillStyle="#b7b7b7";
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle="#333";
+
+ctx.textAlign="center";
+
+ctx.font="bold 26px Arial";
+
+ctx.fillText(
+"RASPE AQUI",
+canvas.width/2,
+canvas.height/2-10
+);
+
+ctx.font="18px Arial";
+
+ctx.fillText(
+"💰 prêmio garantido 💰",
+canvas.width/2,
+canvas.height/2+25
+);
+
 }
 
-window.addEventListener("load", setupCanvas);
-window.addEventListener("resize", setupCanvas);
+window.onload=setupCanvas;
 
-function getPosition(e) {
-  const rect = canvas.getBoundingClientRect();
+function pos(e){
 
-  return {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
-  };
+const r=
+canvas.getBoundingClientRect();
+
+return{
+x:e.clientX-r.left,
+y:e.clientY-r.top
+};
+
 }
 
-function startScratch(e) {
-  e.preventDefault();
-  isDrawing = true;
-  scratch(e);
+function start(e){
+
+drawing=true;
+scratch(e);
+
 }
 
-function stopScratch(e) {
-  e.preventDefault();
-  isDrawing = false;
+function stop(){
+
+drawing=false;
+
 }
 
-function scratch(e) {
-  if (!isDrawing || revealed) return;
+function scratch(e){
 
-  e.preventDefault();
+if(!drawing || revealed)
+return;
 
-  const pos = getPosition(e);
+e.preventDefault();
 
-  ctx.globalCompositeOperation = "destination-out";
-  ctx.beginPath();
-  ctx.arc(pos.x, pos.y, 32, 0, Math.PI * 2);
-  ctx.fill();
+const p=pos(e);
 
-  checkReveal();
+ctx.globalCompositeOperation=
+"destination-out";
+
+ctx.beginPath();
+
+ctx.arc(
+p.x,
+p.y,
+35,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+checkReveal();
+
 }
 
-function checkReveal() {
-  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let clear = 0;
+function checkReveal(){
 
-  for (let i = 3; i < pixels.data.length; i += 4) {
-    if (pixels.data[i] === 0) clear++;
-  }
+const img=
+ctx.getImageData(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
-  const percent = clear / (pixels.data.length / 4);
+let clear=0;
 
-  if (percent > 0.35 && !revealed) {
-    revealPrize();
-  }
+for(let i=3;i<img.data.length;i+=4){
+
+if(img.data[i]===0)
+clear++;
+
 }
 
-function revealPrize() {
-  revealed = true;
-  canvas.style.display = "none";
+const percent=
+clear/(img.data.length/4);
 
-  if (navigator.vibrate) {
-    navigator.vibrate([200, 100, 250, 100, 400]);
-  }
+if(percent>.35){
 
-  document.getElementById("page").classList.add("screen-shake");
-  document.getElementById("overlay").classList.add("active");
-  document.getElementById("boom").classList.add("active");
-  document.getElementById("again").classList.add("show");
+reveal();
 
-  setTimeout(() => {
-    document.getElementById("overlay").classList.remove("active");
-  }, 1500);
 }
 
-canvas.addEventListener("pointerdown", startScratch, { passive: false });
-canvas.addEventListener("pointermove", scratch, { passive: false });
-canvas.addEventListener("pointerup", stopScratch, { passive: false });
-canvas.addEventListener("pointercancel", stopScratch, { passive: false });
-canvas.addEventListener("pointerleave", stopScratch, { passive: false });
+}
+
+function reveal(){
+
+revealed=true;
+
+canvas.style.display="none";
+
+if(navigator.vibrate){
+
+navigator.vibrate([
+200,
+100,
+200,
+100,
+500
+]);
+
+}
+
+document
+.getElementById("page")
+.classList.add("shake");
+
+document
+.getElementById("overlay")
+.classList.add("active");
+
+document
+.getElementById("boom")
+.classList.add("active");
+
+document
+.getElementById("flash")
+.classList.add("active");
+
+document
+.getElementById("again")
+.classList.add("show");
+
+setTimeout(()=>{
+
+document
+.getElementById("overlay")
+.classList.remove("active");
+
+},1200);
+
+}
+
+canvas.addEventListener(
+"pointerdown",
+start
+);
+
+canvas.addEventListener(
+"pointermove",
+scratch
+);
+
+canvas.addEventListener(
+"pointerup",
+stop
+);
+
+canvas.addEventListener(
+"pointerleave",
+stop
+);
+
 </script>
 
 </body>
